@@ -9,6 +9,7 @@ class Route
    private static array $routes = [];
    private static string $prefix = '';
 
+
    public static function setPrefix($value)
    {
        self::$prefix = $value;
@@ -42,6 +43,8 @@ class Route
        }
 
 
-       call_user_func([new $class, $action]);
+       call_user_func([new $class, $action], new Request());
    }
+
+
 }
