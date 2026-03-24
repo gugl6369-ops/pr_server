@@ -54,4 +54,28 @@ class Middleware
         $dispatcherMiddleware = new Dispatcher($this->middlewareCollector->getData());
         return $dispatcherMiddleware->dispatch($httpMethod, $uri)[1] ?? [];
     }
+
+    //Запуск всех middlewares
+    public function go(string $httpMethod, string $uri, Request $request): Request
+    {
+        return $this->runMiddlewares($httpMethod, $uri, $this->runAppMiddlewares($request));
+    }
+
+//Запуск всех middlewares для текущего маршрута
+    private function runAppMiddlewares(Request $request): Request
+    {
+        //Получаем список всех разрешенных классов middlewares из настроек приложения
+        $routeMiddleware = app()->settings->app['routeAppMiddleware'];
+
+        //Перебираем и запускаем их
+        foreach ($routeMiddleware as $name => $class) {
+            $args = explode(':', $name);
+            $request = (new $class)->handle($request, $args[1]?? null) ?? $request;
+        }
+        return $request;
+    }
+
+//Запуск всех глобальных middlewares
+
+
 }
