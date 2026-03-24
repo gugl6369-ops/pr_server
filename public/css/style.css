@@ -1,0 +1,42 @@
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.post_li{
+    font-size: 24px;
+    font-family: monospace;
+}
+.title_message{
+    font-size: 24px;
+    font-family: monospace;
+}
+.label{
+    background-color: rgba(161, 192, 194, 0.71);
+    padding: 12px 20px;
+    border-radius: 10px;
+    border-bottom: #729969;
+}
+.input{
+    background-color: transparent;
+    border: none;
+    font-size: 24px;
+}
+.auth_button{
+    padding: 15px 20px;
+    border-radius: 20px;
+    background-color: #729969;
+    font-size: 32px;
+}
+
+.form{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    border: 3px solid #729969;
+}
+
+.nav_title{
+    font-size: 20px;
+    color: #729969;
+}

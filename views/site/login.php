@@ -6,9 +6,9 @@
 if (!app()->auth::check()):
     ?>
     <form method="post">
-        <label>Логин <input type="text" name="login"></label>
-        <label>Пароль <input type="password" name="password"></label>
-        <button>Войти</button>
+        <label class="label">Логин <input class="input" type="text" name="login"></label>
+        <label class="label">Пароль <input class="input" type="password" name="password"></label>
+        <button class="auth_button">Войти</button>
     </form>
 <?php endif;
 

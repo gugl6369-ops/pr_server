@@ -1,1 +1,1 @@
-<h2><?= $message ?? ''; ?></h2>
+<h2 class="title_message"><?= $message ?? ''; ?></h2>
