@@ -9,6 +9,7 @@ use Src\Auth\IdentityInterface;
 class User extends Model implements IdentityInterface
 {
     use HasFactory;
+    protected $table = 'Users';
 
     public $timestamps = false;
     protected $fillable = [
