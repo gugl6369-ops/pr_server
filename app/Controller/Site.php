@@ -23,8 +23,8 @@ class Site
 
     public function signup(Request $request): string
     {
-        if ($request->method === 'POST' && User::create($request->all())) {
-            app()->route->redirect('/go');
+        if ($request->method === 'POST' && User::create(array_merge($request->all(), ['role_id' => 1]))) {
+            app()->route->redirect('/');
         }
         return new View('site.signup');
     }

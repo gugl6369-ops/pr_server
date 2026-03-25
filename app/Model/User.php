@@ -9,13 +9,17 @@ use Src\Auth\IdentityInterface;
 class User extends Model implements IdentityInterface
 {
     use HasFactory;
-    protected $table = 'Users';
+    protected $table = 'users';
 
     public $timestamps = false;
     protected $fillable = [
-        'name',
+        'id',
         'login',
-        'password'
+        'name',
+        'surname',
+        'patronymic',
+        'role_id',
+        'password',
     ];
 
     protected static function booted()

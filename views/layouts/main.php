@@ -23,7 +23,8 @@
             <?php
             else:
                 ?>
-                <a href="<?= app()->route->getUrl('/logout') ?>" class="nav_title">Выход (<?= app()->auth::user()->name ?>)</a>
+                <a href="<?= app()->route->getUrl('/logout') ?>" class="nav_title">Выход</a>
+                <a href="/" class="nav_title avatar"><?= app()->auth::user()->name ?></a>
             <?php
             endif;
             ?>
