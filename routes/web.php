@@ -11,6 +11,11 @@ Route::add('GET', '/logout', [Controller\Site::class, 'logout']);
 Route::add('GET', '/delete-user', [Controller\Site::class, 'deleteUser'])
     ->middleware('auth', 'admin');
 Route::add('GET', '/edit-user', [Controller\Site::class, 'editUser'])
-    ->middleware('auth', 'admin');;
+    ->middleware('auth', 'admin');
 Route::add('POST', '/edit-user', [Controller\Site::class, 'editUser'])
-    ->middleware('auth', 'admin');;
+    ->middleware('auth', 'admin');
+Route::add('GET', '/rooms', [Controller\Site::class, 'rooms'])
+    ->middleware('auth');
+Route::add('GET', '/delete-room', [Controller\Site::class, 'deleteRoom'])
+    ->middleware('auth');;
+

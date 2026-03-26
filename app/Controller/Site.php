@@ -8,6 +8,7 @@ use Src\Request;
 use Model\User;
 use Src\Auth\Auth;
 use Src\Validator\Validator;
+use Model\Room;
 
 class Site
 {
@@ -30,10 +31,11 @@ class Site
             $validator = new Validator($request->all(), [
                 'name' => ['required'],
                 'login' => ['required', 'unique:users,login'],
-                'password' => ['required']
+                'surname' => ['required'],
+                'password' => ['required'],
             ], [
                 'required' => 'Поле :field пусто',
-                'unique' => 'Поле :field должно быть уникально'
+                'unique' => 'Поле :field должно быть уникально',
             ]);
 
             if($validator->fails()){
@@ -41,7 +43,8 @@ class Site
                     ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
             }
 
-            if (User::create(array_merge($request->all(), ['role_id' => 2]))) {
+            else {
+                User::create(array_merge($request->all(), ['role_id' => 2]));
                 app()->route->redirect('/hello');
             }
         }
@@ -153,6 +156,45 @@ class Site
         return (new View())->render('site.user-edit', [
             'user' => $user
         ]);
+    }
+
+
+
+
+    public function rooms(): string
+    {
+        $rooms = Room::all();
+
+        return (new View())->render('site.rooms', [
+            'rooms' => $rooms
+        ]);
+    }
+
+    public function deleteRoom(Request $request): void
+    {
+        // 🔒 только сотрудник (role_id = 2)
+        if (!Auth::check() || Auth::user()['role_id'] != 2) {
+            app()->route->redirect('/rooms');
+            return;
+        }
+
+        $id = $request->id;
+
+        if (!$id) {
+            app()->route->redirect('/rooms');
+            return;
+        }
+
+        $room = Room::find($id);
+
+        if (!$room) {
+            app()->route->redirect('/rooms');
+            return;
+        }
+
+        $room->delete();
+
+        app()->route->redirect('/rooms');
     }
 
 
