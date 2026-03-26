@@ -19,14 +19,20 @@
             if (!app()->auth::check()):
                 ?>
                 <a href="<?= app()->route->getUrl('/login') ?>" class="nav_title">Вход</a>
-                <a href="<?= app()->route->getUrl('/signup') ?>" class="nav_title">Регистрация пользователя</a>
             <?php
             else:
                 ?>
                 <a href="<?= app()->route->getUrl('/logout') ?>" class="nav_title">Выход</a>
+
+                <?php
+
+                    ?>
+                    <a href="<?= app()->route->getUrl('/signup') ?>" class="nav_title">Регистрация пользователя</a>
+                <?php  ?>
                 <a href="/" class="nav_title avatar"><?= app()->auth::user()->name ?></a>
             <?php
             endif;
+
             ?>
         </div>
     </nav>
