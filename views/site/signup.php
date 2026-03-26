@@ -8,6 +8,15 @@
         <label class="label"><input class="input" type="text" name="surname" placeholder="Фамилия" required></label>
         <label class="label"><input class="input" type="text" name="patronymic" placeholder="Отчество"></label>
         <label class="label"><input class="input" type="password" name="password" placeholder="Пароль" required></label>
+        <?php if (!empty($errors)): ?>
+            <div style="color:red;">
+                <?php foreach ($errors as $field => $messages): ?>
+                    <?php foreach ($messages as $message): ?>
+                        <p><?= $message ?></p>
+                    <?php endforeach; ?>
+                <?php endforeach; ?>
+            </div>
+        <?php endif; ?>
         <button class="auth_button">Зарегистрироваться</button>
     </form>
 </div>

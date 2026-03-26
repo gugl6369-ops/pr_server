@@ -69,6 +69,91 @@ class Site
         app()->route->redirect('/hello');
     }
 
+    public function deleteUser(Request $request): void
+    {
+        if (!Auth::check()) {
+            app()->route->redirect('/hello');
+            return;
+        }
+
+
+        $currentUser = User::find(Auth::user()['id']);
+
+        if (!$currentUser || !$currentUser->isAdmin()) {
+            app()->route->redirect('/hello');
+            return;
+        }
+
+        $id = $request->id;
+
+        if (!$id) {
+            app()->route->redirect('/hello');
+            return;
+        }
+
+        $user = User::where('id', $id)->first();
+
+        if (!$user) {
+            app()->route->redirect('/hello');
+            return;
+        }
+
+        // нельзя удалить себя
+        if ($user->id == $currentUser->id) {
+            app()->route->redirect('/hello');
+            return;
+        }
+
+        $user->delete();
+
+        app()->route->redirect('/hello');
+    }
+
+    public function editUser(Request $request): string
+    {
+        if (!Auth::check()) {
+            app()->route->redirect('/hello');
+            return '';
+        }
+
+        $currentUser = User::find(Auth::user()['id']);
+
+        if (!$currentUser || !$currentUser->isAdmin()) {
+            app()->route->redirect('/hello');
+            return '';
+        }
+
+        $id = $request->id;
+
+        if (!$id) {
+            app()->route->redirect('/hello');
+            return '';
+        }
+
+        $user = User::find($id);
+
+        if (!$user) {
+            app()->route->redirect('/hello');
+            return '';
+        }
+
+        if ($request->method === 'POST') {
+
+            $user->update([
+                'name' => $request->name,
+                'surname' => $request->surname,
+                'patronymic' => $request->patronymic,
+                'login' => $request->login,
+                'role_id' => $request->role_id,
+            ]);
+
+            app()->route->redirect('/hello');
+        }
+
+        return (new View())->render('site.user-edit', [
+            'user' => $user
+        ]);
+    }
 
 
 }

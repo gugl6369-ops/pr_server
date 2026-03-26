@@ -16,6 +16,16 @@
             <td><?= $user->getRole()?></td>
             <td><?= $user->surname?></td>
             <td><?= $user->password?></td>
+            <td>
+                <a href="<?= app()->route->getUrl('/delete-user?id=' . $user->id) ?>">
+                    Удалить
+                </a>
+            </td>
+            <td>
+                <a href="<?= app()->route->getUrl('/edit-user?id=' . $user->id) ?>">
+                    Редактировать
+                </a>
+            </td>
         </tr>
      <?php endforeach; ?>
         </tbody>
