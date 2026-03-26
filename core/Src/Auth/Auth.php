@@ -3,6 +3,7 @@
 namespace Src\Auth;
 
 use Src\Session;
+use Debug\Debug;
 
 class Auth
 {
@@ -22,14 +23,17 @@ class Auth
     public static function login(IdentityInterface $user): void
     {
         self::$user = $user;
+//        Debug::log($user -> getId());
         Session::set('id', self::$user->getId());
     }
 
     //Аутентификация пользователя и вход по учетным данным
     public static function attempt(array $credentials): bool
     {
+//        Debug::log('aaaaaaaaaaaaaaaaaaaaaaaaaaa');
         if ($user = self::$user->attemptIdentity($credentials)) {
             self::login($user);
+
             return true;
         }
         return false;

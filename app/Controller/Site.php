@@ -19,7 +19,8 @@ class Site
 
     public function hello(): string
     {
-        return new View('site.hello', ['message' => 'hello working']);
+        $users = User::all();
+        return new View('site.hello', ['message' => 'hello working', 'users' => $users]);
     }
 
     public function signup(Request $request): string
@@ -40,8 +41,8 @@ class Site
                     ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
             }
 
-            if (User::create($request->all())) {
-                app()->route->redirect('/login');
+            if (User::create(array_merge($request->all(), ['role_id' => 2]))) {
+                app()->route->redirect('/hello');
             }
         }
         return new View('site.signup');

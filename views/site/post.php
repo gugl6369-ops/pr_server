@@ -2,7 +2,7 @@
 <ol>
     <?php
     foreach ($posts ?? [] as $post) {
-        echo '<li>' . $post->title . '</li>';
+        echo '<li class="post_li">' . $post->title . '</li>';
     }
     ?>
 </ol>

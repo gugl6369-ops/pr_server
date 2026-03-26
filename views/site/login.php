@@ -5,10 +5,13 @@
 <?php
 if (!app()->auth::check()):
     ?>
-    <form method="post">
-        <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
-        <label>Логин <input type="text" name="login"></label>
-        <label>Пароль <input type="password" name="password"></label>
-        <button>Войти</button>
-    </form>
+    <div class="container_form">
+        <form method="post" class="form">
+            <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+            <label class="label"><input class="input" type="text" name="login" placeholder="login"></label>
+            <label class="label"><input class="input" type="password" name="password" placeholder="password"></label>
+            <button class="auth_button">Войти</button>
+        </form>
+    </div>
 <?php endif;
+

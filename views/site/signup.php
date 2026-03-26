@@ -1,25 +1,13 @@
 <h2>Регистрация нового пользователя</h2>
-<pre><?= $message ?? ''; ?></pre>
-<form method="post">
-    <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
-    <label>Имя <input type="text" name="name"></label>
-    <label>Логин <input type="text" name="login"></label>
-    <label>Пароль <input type="password" name="password"></label>
-    <button>Зарегистрироваться</button>
-</form>
-
-Листинг 4.17 Файл views/site/login.php
-<h2>Авторизация</h2>
+<div class="container_form">
 <h3><?= $message ?? ''; ?></h3>
-
-<h3><?= app()->auth->user()->name ?? ''; ?></h3>
-<?php
-if (!app()->auth::check()):
-    ?>
-    <form method="post">
+    <form method="post" class="form">
         <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
-        <label>Логин <input type="text" name="login"></label>
-        <label>Пароль <input type="password" name="password"></label>
-        <button>Войти</button>
+        <label class="label"><input class="input" type="text" name="login" placeholder="Логин" required></label>
+        <label class="label"><input class="input" type="text" name="name" placeholder="Имя" required></label>
+        <label class="label"><input class="input" type="text" name="surname" placeholder="Фамилия" required></label>
+        <label class="label"><input class="input" type="text" name="patronymic" placeholder="Отчество"></label>
+        <label class="label"><input class="input" type="password" name="password" placeholder="Пароль" required></label>
+        <button class="auth_button">Зарегистрироваться</button>
     </form>
-<?php endif;
+</div>
