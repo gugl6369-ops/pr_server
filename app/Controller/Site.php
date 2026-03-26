@@ -18,13 +18,13 @@ class Site
 
     public function hello(): string
     {
-        return new View('site.hello', ['message' => 'hello working']);
+        $users = User::all();
+        return new View('site.hello', ['message' => 'hello working', 'users' => $users]);
     }
 
     public function signup(Request $request): string
     {
-        if ($request->method === 'POST' && User::create(array_merge($request->all(), ['role_id' => 1]))) {
-            Auth::attempt($request->all());
+        if ($request->method === 'POST' && User::create(array_merge($request->all(), ['role_id' => 2]))) {
             app()->route->redirect('/hello');
         }
         return new View('site.signup');

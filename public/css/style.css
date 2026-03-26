@@ -158,5 +158,17 @@ h2{
 }
 .avatar:hover{
     color: #ffffff;
+}
 
+
+table {
+    margin-top: 50px;
+    border-collapse: collapse;
+}
+table, th, td {
+    border: 1px solid black;
+}
+th, td {
+    padding: 10px;
+    text-align: left;
 }

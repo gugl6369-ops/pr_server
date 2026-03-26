@@ -25,15 +25,12 @@
                 <a href="<?= app()->route->getUrl('/logout') ?>" class="nav_title">Выход</a>
 
                 <?php
-
+                    if (app()->auth::user()->isAdmin()):
                     ?>
                     <a href="<?= app()->route->getUrl('/signup') ?>" class="nav_title">Регистрация пользователя</a>
-                <?php  ?>
+                <?php endif; ?>
                 <a href="/" class="nav_title avatar"><?= app()->auth::user()->name ?></a>
-            <?php
-            endif;
-
-            ?>
+            <?php endif; ?>
         </div>
     </nav>
 </header>
