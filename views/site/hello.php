@@ -31,3 +31,27 @@
         </tbody>
     </table>
  <?php endif; ?>
+<h2>Мои комнаты</h2>
+
+<table border="1">
+    <tr>
+        <th>Номер</th>
+        <th>Площадь</th>
+        <th>Места</th>
+        <th>Действие</th>
+    </tr>
+
+    <?php foreach ($rooms as $room): ?>
+        <tr>
+            <td><?= $room->number ?></td>
+            <td><?= $room->square ?></td>
+            <td><?= $room->seating ?></td>
+
+            <td>
+                <a href="<?= app()->route->getUrl('/detach-room?id=' . $room->id) ?>">
+                    ❌ Удалить
+                </a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>

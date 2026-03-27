@@ -1,6 +1,5 @@
 <h1>Список помещений</h1>
-
-<table border="1" cellpadding="10">
+<table>
     <tr>
         <th>ID</th>
         <th>Номер</th>
@@ -9,30 +8,30 @@
         <th>Здание</th>
         <th>Тип вида</th>
     </tr>
-
     <?php foreach ($rooms as $room): ?>
         <tr>
             <td><?= $room->id ?></td>
             <td><?= $room->number ?></td>
             <td><?= $room->square ?></td>
             <td><?= $room->seating ?></td>
-            <td><?= $room->building_id ?></td>
-            <td><?= $room->view_id ?></td>
+            <td><?= $buildings[$room->building_id-1]->name ?></td>
+            <td><?= $views[$room->building_id]->name ?></td>
             <td>
                 <a href="<?= app()->route->getUrl('/delete-room?id=' . $room->id) ?>">
                     Удалить
                 </a>
             </td>
             <td>
-                <a href="<?= app()->route->getUrl('/edit-user?id=' . $user->id) ?>">
+                <a href="<?= app()->route->getUrl('/edit-room?id=' . $room->id) ?>">
                     Редактировать
                 </a>
             </td>
             <td>
-                <a href="<?= app()->route->getUrl('/edit-user?id=' . $user->id) ?>">
+                <a  href="<?= app()->route->getUrl('/attach-room?id=' . $room->id) ?>">
                     Занять
                 </a>
             </td>
         </tr>
     <?php endforeach; ?>
-</table><?php
+</table>
+<a href="<?= app()->route->getUrl('/create-room') ?>" >Создать комнату +</a>

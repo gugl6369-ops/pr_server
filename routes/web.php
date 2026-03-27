@@ -17,5 +17,16 @@ Route::add('POST', '/edit-user', [Controller\Site::class, 'editUser'])
 Route::add('GET', '/rooms', [Controller\Site::class, 'rooms'])
     ->middleware('auth');
 Route::add('GET', '/delete-room', [Controller\Site::class, 'deleteRoom'])
+    ->middleware('auth');
+Route::add('GET', '/edit-room', [Controller\Site::class, 'editRoom'])
+    ->middleware('auth');
+Route::add('POST', '/edit-room', [Controller\Site::class, 'editRoom'])
+    ->middleware('auth');
+Route::add('GET', '/create-room', [Controller\Site::class, 'createRoom'])
     ->middleware('auth');;
+Route::add('POST', '/create-room', [Controller\Site::class, 'createRoom'])
+    ->middleware('auth');
+Route::add('GET', '/attach-room', [Controller\Site::class, 'attachRoom'])
+    ->middleware('auth');
+
 
