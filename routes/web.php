@@ -28,5 +28,20 @@ Route::add('POST', '/create-room', [Controller\Site::class, 'createRoom'])
     ->middleware('auth');
 Route::add('GET', '/attach-room', [Controller\Site::class, 'attachRoom'])
     ->middleware('auth');
+Route::add('GET', '/detach-room', [Controller\Site::class, 'detachRoom'])
+    ->middleware('auth');
+Route::add('GET', '/buildings', [Controller\Site::class, 'buildings'])
+    ->middleware('auth');
+Route::add('GET', '/delete-building', [Controller\Site::class, 'deleteBuilding'])
+    ->middleware('auth');
+Route::add('GET', '/building-create', [Controller\Site::class, 'createBuilding'])
+    ->middleware('auth');
+Route::add('POST', '/building-create', [Controller\Site::class, 'createBuilding'])
+    ->middleware('auth');
+Route::add('GET', '/building-edit', [Controller\Site::class, 'editBuilding'])
+    ->middleware('auth');
+Route::add('POST', '/building-edit', [Controller\Site::class, 'editBuilding'])
+    ->middleware('auth');
+
 
 

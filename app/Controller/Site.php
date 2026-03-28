@@ -305,6 +305,134 @@ class Site
         app()->route->redirect('/hello');
     }
 
+    public function detachRoom(Request $request): void
+    {
+        if (!Auth::check()) {
+            app()->route->redirect('/login');
+            return;
+        }
+
+        $roomId = $request->id;
+        $userId = Auth::user()['id'];
+
+        if (!$roomId) {
+            app()->route->redirect('/hello');
+            return;
+        }
+
+        RoomUser::where([
+            'room_id' => $roomId,
+            'id_login' => $userId
+        ])->delete();
+
+        app()->route->redirect('/hello');
+    }
+
+
+    public function buildings(Request $request): string
+    {
+        $buildings = Building::all();
+        $rooms = Room::all();
+        $views = RoomView::all();
+        $id = $request->get('id');
+
+        if ($id) {
+
+            foreach ($buildings as $building) {
+
+                if ($building->id == $request->id) {
+
+                    $stats = $building->getStats();
+
+                    $square =  $building->total_square = $stats['square'];
+                    $seating = $building->total_seating = $stats['seating'];
+                }
+            }
+        }
+
+        foreach ($buildings as $building) {
+            $building->can_delete = $building->canDelete();
+        }
+
+        return (new View())->render('site.buildings', [
+            'rooms' => $rooms,
+            'buildings' => $buildings,
+            'views' => $views,
+            'square' => $square,
+            'seating' => $seating,
+        ]);
+    }
+    public function deleteBuilding(Request $request): void
+    {
+
+        if (!Auth::check() || Auth::user()['role_id'] != 2) {
+            app()->route->redirect('/buildings');
+            return;
+        }
+
+        $id = $request->id;
+
+        if (!$id) {
+            app()->route->redirect('/buildings');
+            return;
+        }
+
+        $building = Building::find($id);
+        $rooms = Room::all();
+
+        if (!$building) {
+            app()->route->redirect('/buildings');
+            return;
+        }
+
+        if (!$building->canDelete()) {
+            app()->route->redirect('/buildings');
+            return;
+        }
+
+        $building->delete();
+
+        app()->route->redirect('/buildings');
+    }
+
+    public function createBuilding(Request $request): string
+    {
+        if (strtoupper($request->method) === 'POST') {
+
+            Building::create([
+                'name' => $request->name,
+                'address' => $request->address
+            ]);
+
+            app()->route->redirect('/buildings');
+        }
+
+        return (new \Src\View())->render('site.building-create');
+    }
+
+    public function editBuilding(Request $request): string
+    {
+        $building = Building::find($request->id);
+
+        if (!$building) {
+            app()->route->redirect('/buildings');
+            return '';
+        }
+
+        if (strtoupper($request->method) === 'POST') {
+
+            $building->update([
+                'name' => $request->name,
+                'address' => $request->address
+            ]);
+
+            app()->route->redirect('/buildings');
+        }
+
+        return (new \Src\View())->render('site.building-edit', [
+            'building' => $building
+        ]);
+    }
 
 
 

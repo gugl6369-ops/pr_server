@@ -32,6 +32,7 @@
                         else:
                         ?>
                             <a href="<?= app()->route->getUrl('/rooms') ?>" class="nav_title">Все комнаты</a>
+                            <a href="<?= app()->route->getUrl('/buildings') ?>" class="nav_title">Все здания</a>
                 <?php endif; ?>
                 <a href="/" class="nav_title avatar"><?= app()->auth::user()->name ?></a>
             <?php endif; ?>

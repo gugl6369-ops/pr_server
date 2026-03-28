@@ -31,6 +31,7 @@
         </tbody>
     </table>
  <?php endif; ?>
+<?php if (!app()->auth->user()->isAdmin()): ?>
 <h2>Мои комнаты</h2>
 
 <table border="1">
@@ -55,3 +56,4 @@
         </tr>
     <?php endforeach; ?>
 </table>
+<?php endif; ?>
