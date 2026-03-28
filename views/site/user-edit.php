@@ -12,7 +12,15 @@
             <option value="1" <?= $user->role_id == 1 ? 'selected' : '' ?>>Admin</option>
             <option value="2" <?= $user->role_id == 2 ? 'selected' : '' ?>>Нищета</option>
         </select>
+        <?php if ($message): ?>
+            <p><?= $message ?></p>
+        <?php endif; ?>
+        <?php if ($errors): ?>
+            <?php foreach ($errors as $error): ?>
+                <p><?= $error[0] ?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
-        <button type="submit">Сохранить</button>
+        <button class="auth_button" type="submit">Сохранить</button>
     </form>
 </div>

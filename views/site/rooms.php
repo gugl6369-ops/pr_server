@@ -14,8 +14,8 @@
             <td><?= $room->number ?></td>
             <td><?= $room->square ?></td>
             <td><?= $room->seating ?></td>
-            <td><?= $buildings[$room->building_id-1]->name ?></td>
-            <td><?= $views[$room->building_id]->name ?></td>
+            <td> <?= $buildings->where('id', $room->building_id)->first()->name ?? '' ?></td>
+            <td> <?= $views->where('id', $room->view_id)->first()->name ?? '' ?> </td>
             <td>
                 <a href="<?= app()->route->getUrl('/delete-room?id=' . $room->id) ?>">
                     Удалить

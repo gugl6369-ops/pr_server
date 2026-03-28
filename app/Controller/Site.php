@@ -40,29 +40,31 @@ class Site
 
     public function signup(Request $request): string
     {
-        if ($request->method === 'POST') {
+        $message = '';
+        $errors = [];
 
+        if ($request->method === 'POST') {
             $validator = new Validator($request->all(), [
-                'name' => ['required'],
+                'name' => ['required', 'min:3', 'max:20'],
                 'login' => ['required', 'unique:users,login'],
                 'surname' => ['required'],
-                'password' => ['required'],
+                'password' => ['required', 'min:3', 'max:20'],
             ], [
                 'required' => 'Поле :field пусто',
-                'unique' => 'Поле :field должно быть уникально',
+                'unique' => 'Поле :field должно быть уникально'
             ]);
-
             if($validator->fails()){
-                return new View('site.signup',
-                    ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+                $errors = $validator->errors();
             }
-
-            else {
-                User::create(array_merge($request->all(), ['role_id' => 2]));
-                app()->route->redirect('/hello');
+            else if(User::create(array_merge($request->all(), ['role_id' => 2]))) {
+                $message = 'Пользователь успешно создан';
+                //app()->route->redirect('/hello');
             }
         }
-        return new View('site.signup');
+        return new View('site.signup', [
+            'message' => $message,
+            'errors' => $errors
+        ]);
     }
 
 
@@ -153,22 +155,39 @@ class Site
             app()->route->redirect('/hello');
             return '';
         }
+        $message = '';
+        $errors = [];
 
         if ($request->method === 'POST') {
-
-            $user->update([
-                'name' => $request->name,
-                'surname' => $request->surname,
-                'patronymic' => $request->patronymic,
-                'login' => $request->login,
-                'role_id' => $request->role_id,
+            $validator = new Validator($request->all(), [
+                'name' => ['required', 'min:3', 'max:20'],
+                'login' => ['required'],
+                'surname' => ['required'],
+                'role_id' => ['required'],
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
             ]);
 
-            app()->route->redirect('/hello');
+            if($validator->fails()){
+                $errors = $validator->errors();
+            }
+            else{
+                $user->update([
+                    'name' => $request->name,
+                    'surname' => $request->surname,
+                    'patronymic' => $request->patronymic,
+                    'login' => $request->login,
+                    'role_id' => $request->role_id,
+                ]);
+               app()->route->redirect('/hello');
+            }
         }
 
         return (new View())->render('site.user-edit', [
-            'user' => $user
+            'user' => $user,
+            'message' => $message,
+            'errors' => $errors
         ]);
     }
 
@@ -227,23 +246,43 @@ class Site
         $buildings = Building::all();
         $views = RoomView::all();
 
+        $message = '';
+        $errors = [];
+
         if (strtoupper($request->method) === 'POST') {
-
-            $room->update([
-                'number' => $request->number,
-                'square' => $request->square,
-                'seating' => $request->seating,
-                'building_id' => $request->building_id,
-                'view_id' => $request->view_id,
+            $validator = new Validator($request->all(), [
+                'number' => ['required', 'max:5', 'numeric'],
+                'square' => ['required', 'numeric'],
+                'seating' => ['required', 'integer'],
+                'building_id' => ['required'],
+                'view_id' => ['required'],
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
             ]);
+            if($validator->fails()){
+                $errors = $validator->errors();
+            }
+            else{
+                $room->update([
+                    'number' => $request->number,
+                    'square' => $request->square,
+                    'seating' => $request->seating,
+                    'building_id' => $request->building_id,
+                    'view_id' => $request->view_id,
+                ]);
+                app()->route->redirect('/rooms');
+            }
 
-            app()->route->redirect('/rooms');
+
         }
 
         return (new \Src\View())->render('site.room-edit', [
             'room' => $room,
             'buildings' => $buildings,
-            'views' => $views
+            'views' => $views,
+            'message' => $message,
+            'errors' => $errors
         ]);
     }
 
@@ -253,26 +292,43 @@ class Site
             app()->route->redirect('/rooms');
             return '';
         }
-
+        $message = '';
+        $errors = [];
         $buildings = Building::all();
         $views = RoomView::all();
 
         if (strtoupper($request->method) === 'POST') {
-
-            $room = Room::create([
-                'number' => $request->number,
-                'square' => $request->square,
-                'seating' => $request->seating,
-                'building_id' => $request->building_id,
-                'view_id' => $request->view_id,
+            $validator = new Validator($request->all(), [
+                'number' => ['required', 'max:5', 'numeric'],
+                'square' => ['required', 'numeric'],
+                'seating' => ['required', 'integer'],
+                'building_id' => ['required'],
+                'view_id' => ['required'],
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
             ]);
+            if($validator->fails()){
+                $errors = $validator->errors();
+            }
+            else {
+                $room = Room::create([
+                    'number' => $request->number,
+                    'square' => $request->square,
+                    'seating' => $request->seating,
+                    'building_id' => $request->building_id,
+                    'view_id' => $request->view_id,
+                ]);
 
-            app()->route->redirect('/rooms');
+                app()->route->redirect('/rooms');
+            }
         }
 
         return (new \Src\View())->render('site.room-create', [
             'buildings' => $buildings,
-            'views' => $views
+            'views' => $views,
+            'message' => $message,
+            'errors' => $errors
         ]);
     }
 

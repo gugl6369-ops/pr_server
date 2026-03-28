@@ -23,6 +23,14 @@
                 </option>
             <?php endforeach; ?>
         </select>
+        <?php if ($message): ?>
+            <p><?= $message ?></p>
+        <?php endif; ?>
+        <?php if ($errors): ?>
+            <?php foreach ($errors as $error): ?>
+                <p><?= $error[0] ?></p>
+            <?php endforeach; ?>
+        <?php endif; ?>
 
         <button class="auth_button" type="submit">Сохранить</button>
     </form>

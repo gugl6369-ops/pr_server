@@ -40,20 +40,24 @@ class Validator
         foreach ($fieldValidators as $validatorName) {
             //Отделяем от имени валидатора дополнительные аргументы
             $tmp = explode(':', $validatorName);
-            [$validatorName, $args] = count($tmp) > 1 ? $tmp : [$validatorName, null];
-            $args = isset($args) ? explode(',', $args) : [];
+
+            $ruleName = $tmp[0];
+            $args = isset($tmp[1]) ? explode(',', $tmp[1]) : [];
 
             //Соотносим имя валидатора с классом в массиве разрешенных валидаторов
-            $validatorClass = $this->validators[$validatorName];
+            $validatorClass = $this->validators[$ruleName] ?? null;
             if (!class_exists($validatorClass)) {
                 continue;
             }
+
+            $message = $this->messages[$ruleName] ?? null;
             //Создаем объект валидатора, передаем туда параметры
             $validator = new $validatorClass(
                 $fieldName,
                 $this->fields[$fieldName],
                 $args,
-                $this->messages[$validatorName]);
+                $message
+            );
 
             //Если валидация не прошла, то добавляем ошибку в общий массив ошибок
             if (!$validator->rule()) {
