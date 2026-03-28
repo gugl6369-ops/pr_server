@@ -5,6 +5,7 @@ namespace Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Src\Auth\IdentityInterface;
+use Illuminate\Database\Capsule\Manager as Capsule;
 
 class User extends Model implements IdentityInterface
 {
@@ -56,6 +57,20 @@ class User extends Model implements IdentityInterface
     public function getRole(): string
     {
         return Role::find($this->role_id)->name;
+    }
+
+
+    public function delete(): bool
+    {
+        // удалить связи
+        Capsule::table('room_user')
+            ->where('id_login', $this->id)
+            ->delete();
+
+        // удалить пользователя
+        return Capsule::table('users')
+            ->where('id', $this->id)
+            ->delete();
     }
 
 }

@@ -8,12 +8,20 @@
     <link rel="stylesheet" href="./css/style.css">
     <title>Pop it MVC</title>
 </head>
-<body>
+
+<?php $bg = \Src\Session::get('background'); ?>
+
+<body style="<?= $bg ? "background: url('$bg') no-repeat center/cover;" : '' ?>">
 <header>
     <nav class="navigation">
         <div>
             <a href="<?= app()->route->getUrl('/hello') ?>"><h1>Файлы Эпштн</h1></a>
         </div>
+        <form method="post" action="/upload-bg" enctype="multipart/form-data">
+            <input name="csrf_token" type="hidden" value="<?= app()->auth::generateCSRF() ?>"/>
+            <input type="file" name="background">
+            <button>Загрузить фон</button>
+        </form>
         <div class="nav_auth">
             <?php
             if (!app()->auth::check()):

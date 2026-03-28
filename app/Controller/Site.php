@@ -453,41 +453,94 @@ class Site
 
     public function createBuilding(Request $request): string
     {
+        $message = '';
+        $errors = [];
+
         if (strtoupper($request->method) === 'POST') {
-
-            Building::create([
-                'name' => $request->name,
-                'address' => $request->address
+            $validator = new Validator($request->all(), [
+                'name' => ['required', 'max:50', 'min:3'],
+                'address' => ['required', 'min:3'],
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
             ]);
-
-            app()->route->redirect('/buildings');
+            if($validator->fails()){
+                $errors = $validator->errors();
+            }
+            else{
+                Building::create([
+                    'name' => $request->name,
+                    'address' => $request->address
+                ]);
+                app()->route->redirect('/buildings');
+            }
         }
 
-        return (new \Src\View())->render('site.building-create');
+        return (new \Src\View())->render('site.building-create', [
+            'errors' => $errors,
+            'message' => $message,
+        ]);
     }
 
     public function editBuilding(Request $request): string
     {
         $building = Building::find($request->id);
-
+        $message = '';
+        $errors = [];
         if (!$building) {
             app()->route->redirect('/buildings');
             return '';
         }
 
         if (strtoupper($request->method) === 'POST') {
-
-            $building->update([
-                'name' => $request->name,
-                'address' => $request->address
+            $validator = new Validator($request->all(), [
+                'name' => ['required', 'max:50', 'min:3'],
+                'address' => ['required', 'min:3'],
+            ], [
+                'required' => 'Поле :field пусто',
+                'unique' => 'Поле :field должно быть уникально'
             ]);
-
-            app()->route->redirect('/buildings');
+            if($validator->fails()){
+                $errors = $validator->errors();
+            }
+            else{
+                $building->update([
+                    'name' => $request->name,
+                    'address' => $request->address
+                ]);
+                app()->route->redirect('/buildings');
+            }
         }
 
         return (new \Src\View())->render('site.building-edit', [
-            'building' => $building
+            'building' => $building,
+            'errors' => $errors,
+            'message' => $message,
         ]);
+    }
+
+    public function uploadBackground(Request $request): string
+    {
+        if ($request->method === 'POST' && isset($_FILES['background'])) {
+
+            $file = $_FILES['background'];
+
+            // проверка на ошибку
+            if ($file['error'] === 0) {
+
+                $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
+                $fileName = 'bg.' . $ext;
+
+                $path = __DIR__ . '/../../public/uploads/' . $fileName;
+
+                move_uploaded_file($file['tmp_name'], $path);
+
+                // сохраняем путь в сессию
+                \Src\Session::set('background', '/uploads/' . $fileName);
+            }
+        }
+
+        return app()->route->redirect('/hello');
     }
 
 

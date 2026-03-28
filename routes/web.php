@@ -42,6 +42,8 @@ Route::add('GET', '/building-edit', [Controller\Site::class, 'editBuilding'])
     ->middleware('auth');
 Route::add('POST', '/building-edit', [Controller\Site::class, 'editBuilding'])
     ->middleware('auth');
+Route::add(['GET', 'POST'], '/upload-bg', [Controller\Site::class, 'uploadBackground'])
+    ->middleware('auth');
 
 
 
