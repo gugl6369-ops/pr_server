@@ -525,7 +525,6 @@ class Site
 
             $file = $_FILES['background'];
 
-            // проверка на ошибку
             if ($file['error'] === 0) {
 
                 $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
@@ -535,7 +534,6 @@ class Site
 
                 move_uploaded_file($file['tmp_name'], $path);
 
-                // сохраняем путь в сессию
                 \Src\Session::set('background', '/uploads/' . $fileName);
             }
         }
