@@ -26,7 +26,7 @@ class Site
     {
         $users = User::all();
 
-        $userId = Auth::user()['id'];
+        $userId = Auth::user()->id;
 
         // 👉 получаем комнаты через join
         $rooms = Room::join('room_user', 'room.id', '=', 'room_user.room_id')
