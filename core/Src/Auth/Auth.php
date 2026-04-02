@@ -30,7 +30,7 @@ class Auth
     //Аутентификация пользователя и вход по учетным данным
     public static function attempt(array $credentials): bool
     {
-//        Debug::log('aaaaaaaaaaaaaaaaaaaaaaaaaaa');
+
         if ($user = self::$user->attemptIdentity($credentials)) {
             self::login($user);
 

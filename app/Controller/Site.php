@@ -2,6 +2,7 @@
 
 namespace Controller;
 
+use Debug\Debug;
 use Model\Post;
 use Src\View;
 use Src\Request;
@@ -28,12 +29,9 @@ class Site
 
         $userId = Auth::user()->id;
 
-        // 👉 получаем комнаты через join
         $rooms = Room::join('room_user', 'room.id', '=', 'room_user.room_id')
             ->where('room_user.id_login', $userId)
             ->get();
-
-
 
         return new View('site.hello', ['message' => 'hello working', 'users' => $users, 'rooms' => $rooms]);
     }
@@ -70,15 +68,28 @@ class Site
 
     public function login(Request $request): string
     {
-        //Если просто обращение к странице, то отобразить форму
+
         if ($request->method === 'GET') {
             return new View('site.login');
         }
-        //Если удалось аутентифицировать пользователя, то редирект
+
+
+        $validator = new Validator($request->all(), [
+            'login' => ['required'],
+            'password' => ['required']
+        ], [
+            'required' => 'Поле :field пусто',
+        ]);
+
+        if($validator->fails()){
+            return new View('site.login',
+                ['message' => json_encode($validator->errors(), JSON_UNESCAPED_UNICODE)]);
+        }
+
         if (Auth::attempt($request->all())) {
             app()->route->redirect('/hello');
         }
-        //Если аутентификация не удалась, то сообщение об ошибке
+
         return new View('site.login', ['message' => 'Неправильные логин или пароль']);
     }
 
@@ -540,6 +551,7 @@ class Site
 
         return app()->route->redirect('/hello');
     }
+
 
 
 

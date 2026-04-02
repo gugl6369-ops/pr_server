@@ -1,7 +1,6 @@
 <h2>Авторизация</h2>
 <h3><?= $message ?? ''; ?></h3>
 
-<h3><?= app()->auth->user()->name ?? ''; ?></h3>
 <?php
 if (!app()->auth::check()):
     ?>
@@ -13,5 +12,7 @@ if (!app()->auth::check()):
             <button class="auth_button">Войти</button>
         </form>
     </div>
+    <?php else: ?>
+    <p>вы уже вошли(</p>
 <?php endif;
 
