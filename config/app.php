@@ -9,14 +9,7 @@ return [
         'auth' => \Middlewares\AuthMiddleware::class,
         'admin' => \Middlewares\AdminMiddleware::class,
     ],
-    'validators' => [
-        'required' => Validators\RequireValidator::class,
-        'unique' => Validators\UniqueValidator::class,
-        'min' => Validators\MinValidator::class,
-        'max' => Validators\MaxValidator::class,
-        'numeric' => Validators\NumericValidator::class,
-        'integer' => Validators\IntegerValidator::class,
-    ],
+    'validators' => \BasicValidators\getValidators(),
     'routeAppMiddleware' => [
         'csrf' => \Middlewares\CSRFMiddleware::class,
         'trim' => \Middlewares\TrimMiddleware::class,

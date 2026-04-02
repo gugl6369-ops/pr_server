@@ -14,7 +14,8 @@
         "illuminate/database": "12.x-dev",
         "illuminate/events": "12.x-dev",
         "nikic/fast-route": "^2.0@dev",
-        "gugl6369-ops/collect": "dev-master"
+        "gugl6369-ops/collect": "dev-master",
+        "gugl6369-ops/validators": "dev-master"
     },
     "autoload": {
       "psr-4": {
