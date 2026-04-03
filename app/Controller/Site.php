@@ -324,12 +324,13 @@ class Site
             }
             else {
                 $room = Room::create([
-                    'number' => $request->number,
-                    'square' => $request->square,
-                    'seating' => $request->seating,
-                    'building_id' => $request->building_id,
-                    'view_id' => $request->view_id,
+                    'number' => $request->all()['number'],
+                    'square' => $request->all()['square'],
+                    'seating' => $request->all()['seating'],
+                    'building_id' => $request->all()['building_id'],
+                    'view_id' => $request->all()['view_id'],
                 ]);
+                $message = 'Комната успешно создана';
 
                 app()->route->redirect('/rooms');
             }
@@ -480,10 +481,11 @@ class Site
             }
             else{
                 Building::create([
-                    'name' => $request->name,
-                    'address' => $request->address
+                    'name' => $request->all()['name'],
+                    'address' => $request->all()['address']
                 ]);
                 app()->route->redirect('/buildings');
+                $message = 'Здание успешно создано';
             }
         }
 

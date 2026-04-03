@@ -44,3 +44,56 @@ CREATE TABLE room_user (
                            FOREIGN KEY (room_id) REFERENCES room(id),
                            FOREIGN KEY (id_login) REFERENCES users(id)
 );
+
+-- ТЕСТОВЫЕ ДАННЫЕ
+
+INSERT INTO building(id, name, address) VALUES
+                        (
+                            1, 'школа', 'г Тамсямск'
+                        ),
+                        (
+                            2, 'продуктовый', 'г Калаед'
+                        );
+
+INSERT INTO view_room(id, name) VALUES
+                        (
+                            1, 'Аудитория'
+                        ),
+                        (
+                            2, 'Зал'
+                        ),
+                        (
+                            3, 'Офис'
+                        );
+
+INSERT INTO room(id, number, square, seating, building_id, view_id) VALUES
+                        (
+                            1, '№ 67', 20, 1, 2, 3
+                        ),
+                        (
+                            2, '№52', 15, 100, 1, 2
+                        ),
+                        (
+                            3, '№11111', 5, 100, 1, 1
+                        );
+
+INSERT INTO role(id, name) VALUES
+                        (
+                            1, 'Admin'
+                        ),
+                        (
+                            2, 'Sotrudnic'
+                        );
+
+INSERT INTO users(id, login, password, name, role_id, surname, patronymic) VALUES
+                        (
+                            1, 'admin', (SELECT MD5('admin')), 'Админ', 1, 'Админов', 'Админович'
+                        ),
+                        (
+                            2, 'employee', (SELECT MD5('employee')), 'Рабочий', 1, 'Негр', 'Безпапович'
+                        );
+
+INSERT INTO room_user(room_id, id_login) VALUES
+                        (
+                            1, 2
+                        );
