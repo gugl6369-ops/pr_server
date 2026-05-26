@@ -24,15 +24,12 @@ class RouteProvider extends AbstractProvider
             $this->app->settings->removeAppMiddleware('specialChars');
             Auth::logout();
             //Загружаем маршруты из файла для апи
-//            Route::group('/api', function () {
-
-            //Загружаем маршруты из файла для апи
             Route::group('/api', function () {
-                require_once __DIR__ . '/../..' . $this->app->settings->getRoutePath() . '/api.php';
+                require __DIR__ . '/../..' . $this->app->settings->getRoutePath() . '/api.php';
             });
+        } else {
+            $this->app->settings->removeAppMiddleware('json');
         }
-
-        $this->app->settings->removeAppMiddleware('json');
         //Загружаем маршруты из стандартного файла
         require_once __DIR__ . '/../..' . $this->app->settings->getRoutePath() . '/web.php';
 

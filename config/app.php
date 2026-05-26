@@ -8,6 +8,7 @@ return [
     'routeMiddleware' => [
         'auth' => \Middlewares\AuthMiddleware::class,
         'admin' => \Middlewares\AdminMiddleware::class,
+        'token' => \Middlewares\TokenMiddleware::class,
     ],
     'validators' => \BasicValidators\getValidators(),
     'routeAppMiddleware' => [

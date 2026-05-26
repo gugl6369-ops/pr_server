@@ -25,10 +25,14 @@ class Route
     //Классы для использования внешнего маршрутизатора
     private RouteCollector $routeCollector;
 
+    private static bool $middlewareOnly = false;
+
     //Добавляет маршрут, устанавливает его текущим и возвращает объект
     public static function add($httpMethod, string $route, array $action): self
     {
-        self::single()->routeCollector->addRoute($httpMethod, $route, $action);
+        if (!self::$middlewareOnly) {
+            self::single()->routeCollector->addRoute($httpMethod, $route, $action);
+        }
         self::single()->currentHttpMethod = $httpMethod;
         self::single()->currentRoute = $route;
         return self::single();
@@ -37,8 +41,12 @@ class Route
     //Добавляет префикс для обозначенных маршрутов
     public static function group(string $prefix, callable $callback): void
     {
+        self::$middlewareOnly = false;
         self::single()->routeCollector->addGroup($prefix, $callback);
+
+        self::$middlewareOnly = true;
         Middleware::single()->group($prefix, $callback);
+        self::$middlewareOnly = false;
     }
 
     //Конструктор скрыт. Вызывается только один раз
@@ -66,7 +74,9 @@ class Route
     //Добавление middlewares для текущего маршрута
     public function middleware(...$middlewares): self
     {
-        Middleware::single()->add($this->currentHttpMethod, $this->currentRoute, $middlewares);
+        if (self::$middlewareOnly) {
+            Middleware::single()->add($this->currentHttpMethod, $this->currentRoute, $middlewares);
+        }
         return $this;
     }
 

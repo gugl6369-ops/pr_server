@@ -34,6 +34,7 @@ CREATE TABLE users (
                        role_id INT NOT NULL,
                        surname VARCHAR(100) NOT NULL,
                        patronymic VARCHAR(100),
+                       token VARCHAR(255),
                        FOREIGN KEY (role_id) REFERENCES role(id)
 );
 
